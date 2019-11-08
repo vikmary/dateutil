@@ -6,11 +6,11 @@ from datetime import datetime, timedelta
 import unittest
 import sys
 
-from dateutil import tz
-from dateutil.tz import tzoffset
-from dateutil.parser import parse, parserinfo
-from dateutil.parser import ParserError
-from dateutil.parser import UnknownTimezoneWarning
+from dateutil2 import tz
+from dateutil2.tz import tzoffset
+from dateutil2.parser import parse, parserinfo
+from dateutil2.parser import ParserError
+from dateutil2.parser import UnknownTimezoneWarning
 
 from ._common import TZEnvContext
 
@@ -417,7 +417,7 @@ class ParserTest(unittest.TestCase):
         cls.str_str = cls.uni_str.encode()
 
     def testParserParseStr(self):
-        from dateutil.parser import parser
+        from dateutil2.parser import parser
 
         assert parser().parse(self.str_str) == parser().parse(self.uni_str)
 
@@ -613,7 +613,7 @@ class ParserTest(unittest.TestCase):
 
     def testCustomParserInfo(self):
         # Custom parser info wasn't working, as Michael Elsdörfer discovered.
-        from dateutil.parser import parserinfo, parser
+        from dateutil2.parser import parserinfo, parser
 
         class myparserinfo(parserinfo):
             MONTHS = parserinfo.MONTHS[:]
@@ -625,8 +625,8 @@ class ParserTest(unittest.TestCase):
     def testCustomParserShortDaynames(self):
         # Horacio Hoyos discovered that day names shorter than 3 characters,
         # for example two letter German day name abbreviations, don't work:
-        # https://github.com/dateutil/dateutil/issues/343
-        from dateutil.parser import parserinfo, parser
+        # https://github.com/dateutil2/dateutil2/issues/343
+        from dateutil2.parser import parserinfo, parser
 
         class GermanParserInfo(parserinfo):
             WEEKDAYS = [("Mo", "Montag"),

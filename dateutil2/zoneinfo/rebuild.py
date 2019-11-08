@@ -6,11 +6,11 @@ import json
 from subprocess import check_call
 from tarfile import TarFile
 
-from dateutil.zoneinfo import METADATA_FN, ZONEFILENAME
+from dateutil2.zoneinfo import METADATA_FN, ZONEFILENAME
 
 
 def rebuild(filename, tag=None, format="gz", zonegroups=[], metadata=None):
-    """Rebuild the internal timezone info in dateutil/zoneinfo/zoneinfo*tar*
+    """Rebuild the internal timezone info in dateutil2/zoneinfo/zoneinfo*tar*
 
     filename is the timezone tarball from ``ftp.iana.org/tz``.
 

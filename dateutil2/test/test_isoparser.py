@@ -4,9 +4,9 @@ from __future__ import unicode_literals
 from datetime import datetime, timedelta, date, time
 import itertools as it
 
-from dateutil import tz
-from dateutil.tz import UTC
-from dateutil.parser import isoparser, isoparse
+from dateutil2 import tz
+from dateutil2.tz import UTC
+from dateutil2.parser import isoparser, isoparse
 
 import pytest
 import six

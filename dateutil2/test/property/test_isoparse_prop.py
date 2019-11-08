@@ -1,8 +1,8 @@
 from hypothesis import given, assume
 from hypothesis import strategies as st
 
-from dateutil import tz
-from dateutil.parser import isoparse
+from dateutil2 import tz
+from dateutil2.parser import isoparse
 
 import pytest
 

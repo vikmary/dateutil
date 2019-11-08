@@ -4,10 +4,10 @@ from datetime import timedelta, datetime
 
 import unittest
 
-from dateutil import tz
-from dateutil import utils
-from dateutil.tz import UTC
-from dateutil.utils import within_delta
+from dateutil2 import tz
+from dateutil2 import utils
+from dateutil2.tz import UTC
+from dateutil2.utils import within_delta
 
 from freezegun import freeze_time
 

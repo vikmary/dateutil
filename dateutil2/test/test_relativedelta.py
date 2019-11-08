@@ -8,7 +8,7 @@ import unittest
 
 import pytest
 
-from dateutil.relativedelta import relativedelta, MO, TU, WE, FR, SU
+from dateutil2.relativedelta import relativedelta, MO, TU, WE, FR, SU
 
 
 class RelativeDeltaTest(unittest.TestCase):

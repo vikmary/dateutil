@@ -324,7 +324,7 @@ class rrule(rrulebase):
         This can lead to possibly surprising behavior when, for example, the
         start date occurs at the end of the month:
 
-        >>> from dateutil.rrule import rrule, MONTHLY
+        >>> from dateutil2.rrule import rrule, MONTHLY
         >>> from datetime import datetime
         >>> start_date = datetime(2014, 12, 31)
         >>> list(rrule(freq=MONTHLY, count=4, dtstart=start_date))
@@ -356,7 +356,7 @@ class rrule(rrulebase):
 
         .. note::
             As of version 2.5.0, the use of the keyword ``until`` in conjunction
-            with ``count`` is deprecated, to make sure ``dateutil`` is fully
+            with ``count`` is deprecated, to make sure ``dateutil2`` is fully
             compliant with `RFC-5545 Sec. 3.3.10 <https://tools.ietf.org/
             html/rfc5545#section-3.3.10>`_. Therefore, ``until`` and ``count``
             **must not** occur in the same call to ``rrule``.
@@ -368,7 +368,7 @@ class rrule(rrulebase):
 
         .. note::
             As of version 2.5.0, the use of the keyword ``until`` in conjunction
-            with ``count`` is deprecated, to make sure ``dateutil`` is fully
+            with ``count`` is deprecated, to make sure ``dateutil2`` is fully
             compliant with `RFC-5545 Sec. 3.3.10 <https://tools.ietf.org/
             html/rfc5545#section-3.3.10>`_. Therefore, ``until`` and ``count``
             **must not** occur in the same call to ``rrule``.
@@ -472,7 +472,7 @@ class rrule(rrulebase):
 
         if count is not None and until:
             warn("Using both 'count' and 'until' is inconsistent with RFC 5545"
-                 " and has been deprecated in dateutil. Future versions will "
+                 " and has been deprecated in dateutil2. Future versions will "
                  "raise an error.", DeprecationWarning)
 
         if wkst is None:
@@ -539,7 +539,7 @@ class rrule(rrulebase):
         # byeaster
         if byeaster is not None:
             if not easter:
-                from dateutil import easter
+                from dateutil2 import easter
             if isinstance(byeaster, integer_types):
                 self._byeaster = (byeaster,)
             else:
@@ -699,7 +699,7 @@ class rrule(rrulebase):
         """
         Output a string that would generate this RRULE if passed to rrulestr.
         This is mostly compatible with RFC5545, except for the
-        dateutil-specific extension BYEASTER.
+        dateutil2-specific extension BYEASTER.
         """
 
         output = []
@@ -1433,7 +1433,7 @@ class _rrulestr(object):
         than one line and should be joined before processing.
 
     :param forceset:
-        If set ``True`` forces a :class:`dateutil.rrule.rruleset` to
+        If set ``True`` forces a :class:`dateutil2.rrule.rruleset` to
         be returned.
 
     :param compatible:
@@ -1446,16 +1446,16 @@ class _rrulestr(object):
     :param tzids:
         If given, a callable or mapping used to retrieve a
         :class:`datetime.tzinfo` from a string representation.
-        Defaults to :func:`dateutil.tz.gettz`.
+        Defaults to :func:`dateutil2.tz.gettz`.
 
     :param tzinfos:
         Additional time zone names / aliases which may be present in a string
-        representation.  See :func:`dateutil.parser.parse` for more
+        representation.  See :func:`dateutil2.parser.parse` for more
         information.
 
     :return:
-        Returns a :class:`dateutil.rrule.rruleset` or
-        :class:`dateutil.rrule.rrule`
+        Returns a :class:`dateutil2.rrule.rruleset` or
+        :class:`dateutil2.rrule.rrule`
     """
 
     _freq_map = {"YEARLY": YEARLY,
@@ -1493,7 +1493,7 @@ class _rrulestr(object):
     def _handle_UNTIL(self, rrkwargs, name, value, **kwargs):
         global parser
         if not parser:
-            from dateutil import parser
+            from dateutil2 import parser
         try:
             rrkwargs["until"] = parser.parse(value,
                                              ignoretz=kwargs.get("ignoretz"),
@@ -1562,7 +1562,7 @@ class _rrulestr(object):
                           ignoretz, tzids, tzinfos):
         global parser
         if not parser:
-            from dateutil import parser
+            from dateutil2 import parser
 
         datevals = []
         value_found = False
@@ -1699,7 +1699,7 @@ class _rrulestr(object):
             if (forceset or len(rrulevals) > 1 or rdatevals
                     or exrulevals or exdatevals):
                 if not parser and (rdatevals or exdatevals):
-                    from dateutil import parser
+                    from dateutil2 import parser
                 rset = rruleset(cache=cache)
                 for value in rrulevals:
                     rset.rrule(self._parse_rfc_rrule(value, dtstart=dtstart,

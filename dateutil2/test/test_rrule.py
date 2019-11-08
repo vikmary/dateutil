@@ -5,8 +5,8 @@ from datetime import datetime, date
 import unittest
 from six import PY2
 
-from dateutil import tz
-from dateutil.rrule import (
+from dateutil2 import tz
+from dateutil2.rrule import (
     rrule, rruleset, rrulestr,
     YEARLY, MONTHLY, WEEKLY, DAILY,
     HOURLY, MINUTELY, SECONDLY,
@@ -2309,7 +2309,7 @@ class RRuleTest(unittest.TestCase):
         combinations of `dtstart` and `byhour` which result in an rrule with no
         valid values.
 
-        See https://github.com/dateutil/dateutil/issues/4
+        See https://github.com/dateutil2/dateutil2/issues/4
         """
 
         self.assertRaises(ValueError, rrule, HOURLY,
@@ -4860,7 +4860,7 @@ class WeekdayTest(unittest.TestCase):
     def testWeekdayCallable(self):
         # Calling a weekday instance generates a new weekday instance with the
         # value of n changed.
-        from dateutil.rrule import weekday
+        from dateutil2.rrule import weekday
         self.assertEqual(MO(1), weekday(0, 1))
 
         # Calling a weekday instance with the identical n returns the original

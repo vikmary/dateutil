@@ -23,21 +23,21 @@ IS_WIN = sys.platform.startswith('win')
 
 import pytest
 
-# dateutil imports
-from dateutil.relativedelta import relativedelta, SU, TH
-from dateutil.parser import parse
-from dateutil import tz as tz
-from dateutil import zoneinfo
+# dateutil2 imports
+from dateutil2.relativedelta import relativedelta, SU, TH
+from dateutil2.parser import parse
+from dateutil2 import tz as tz
+from dateutil2 import zoneinfo
 
 try:
-    from dateutil import tzwin
+    from dateutil2 import tzwin
 except ImportError as e:
     if IS_WIN:
         raise e
     else:
         pass
 
-MISSING_TARBALL = ("This test fails if you don't have the dateutil "
+MISSING_TARBALL = ("This test fails if you don't have the dateutil2 "
                    "timezone file installed. Please read the README")
 
 TZFILE_EST5EDT = b"""
@@ -655,7 +655,7 @@ class TzUTCTest(unittest.TestCase):
         self.assertEqual(repr(UTC), 'tzutc()')
 
     def testTimeOnlyUTC(self):
-        # https://github.com/dateutil/dateutil/issues/132
+        # https://github.com/dateutil2/dateutil2/issues/132
         # tzutc doesn't care
         tz_utc = tz.tzutc()
         self.assertEqual(dt_time(13, 20, tzinfo=tz_utc).utcoffset(),
@@ -1619,8 +1619,8 @@ def test_valid_GNU_tzstr(tz_str, expected):
         start=relativedelta(hours=+2, month=5, day=1, weekday=SU(+4)),
         end=relativedelta(hours=+1, month=11, day=31, weekday=SU(-3)))),
 ])
-def test_valid_dateutil_format(tz_str, expected):
-    # This tests the dateutil-specific format that is used widely in the tests
+def test_valid_dateutil2_format(tz_str, expected):
+    # This tests the dateutil2-specific format that is used widely in the tests
     # and examples. It is unclear where this format originated from.
     with pytest.warns(tz.DeprecatedTzFormatWarning):
         tzi = tz.tzstr.instance(tz_str)
@@ -2141,7 +2141,7 @@ class TzWinTest(unittest.TestCase, TzWinFoldMixin):
                          timedelta(-1, 82800))
 
     def testTzwinName(self):
-        # https://github.com/dateutil/dateutil/issues/143
+        # https://github.com/dateutil2/dateutil2/issues/143
         tw = tz.tzwin('Eastern Standard Time')
 
         # Cover the transitions for at least two years.
@@ -2165,7 +2165,7 @@ class TzWinTest(unittest.TestCase, TzWinFoldMixin):
                                    repr('Yakutsk Standard Time') + ')')
 
     def testTzWinEquality(self):
-        # https://github.com/dateutil/dateutil/issues/151
+        # https://github.com/dateutil2/dateutil2/issues/151
         tzwin_names = ('Eastern Standard Time',
                        'West Pacific Standard Time',
                        'Yakutsk Standard Time',
@@ -2180,7 +2180,7 @@ class TzWinTest(unittest.TestCase, TzWinFoldMixin):
             self.assertEqual(tw1, tw2)
 
     def testTzWinInequality(self):
-        # https://github.com/dateutil/dateutil/issues/151
+        # https://github.com/dateutil2/dateutil2/issues/151
         # Note these last two currently differ only in their name.
         tzwin_names = (('Eastern Standard Time', 'Yakutsk Standard Time'),
                        ('Greenwich Standard Time', 'GMT Standard Time'),
@@ -2260,7 +2260,7 @@ class TzWinLocalTest(unittest.TestCase, TzWinFoldMixin):
     def testLocal(self):
         # Not sure how to pin a local time zone, so for now we're just going
         # to run this and make sure it doesn't raise an error
-        # See GitHub Issue #135: https://github.com/dateutil/dateutil/issues/135
+        # See GitHub Issue #135: https://github.com/dateutil2/dateutil2/issues/135
         datetime.now(tzwin.tzwinlocal())
 
     def testTzwinLocalUTCOffset(self):
@@ -2270,7 +2270,7 @@ class TzWinLocalTest(unittest.TestCase, TzWinFoldMixin):
                              timedelta(hours=-4))
 
     def testTzwinLocalName(self):
-        # https://github.com/dateutil/dateutil/issues/143
+        # https://github.com/dateutil2/dateutil2/issues/143
         ESTs = 'Eastern Standard Time'
         EDTs = 'Eastern Daylight Time'
         transition_dates = [(datetime(2015, 3, 8, 0, 59), ESTs),
@@ -2293,7 +2293,7 @@ class TzWinLocalTest(unittest.TestCase, TzWinFoldMixin):
         self.assertEqual(repr(tw), 'tzwinlocal()')
 
     def testTzwinLocalRepr(self):
-        # https://github.com/dateutil/dateutil/issues/143
+        # https://github.com/dateutil2/dateutil2/issues/143
         with TZWinContext('Eastern Standard Time'):
             tw = tz.tzwinlocal()
 

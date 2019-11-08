@@ -72,7 +72,7 @@ class tzres(object):
         """
         Load a timezone name from a DLL offset (integer).
 
-        >>> from dateutil.tzwin import tzres
+        >>> from dateutil2.tzwin import tzres
         >>> tzr = tzres()
         >>> print(tzr.load_name(112))
         'Eastern Standard Time'
@@ -96,7 +96,7 @@ class tzres(object):
         Parse strings as returned from the Windows registry into the time zone
         name as defined in the registry.
 
-        >>> from dateutil.tzwin import tzres
+        >>> from dateutil2.tzwin import tzres
         >>> tzr = tzres()
         >>> print(tzr.name_from_string('@tzres.dll,-251'))
         'Dateline Daylight Time'
@@ -203,7 +203,7 @@ class tzwin(tzwinbase):
     """
     Time zone object created from the zone info in the Windows registry
 
-    These are similar to :py:class:`dateutil.tz.tzrange` objects in that
+    These are similar to :py:class:`dateutil2.tz.tzrange` objects in that
     the time zone data is provided in the format of a single offset rule
     for either 0 or 2 time zone transitions per year.
 
@@ -260,16 +260,16 @@ class tzwinlocal(tzwinbase):
     """
     Class representing the local time zone information in the Windows registry
 
-    While :class:`dateutil.tz.tzlocal` makes system calls (via the :mod:`time`
+    While :class:`dateutil2.tz.tzlocal` makes system calls (via the :mod:`time`
     module) to retrieve time zone information, ``tzwinlocal`` retrieves the
     rules directly from the Windows registry and creates an object like
-    :class:`dateutil.tz.tzwin`.
+    :class:`dateutil2.tz.tzwin`.
 
     Because Windows does not have an equivalent of :func:`time.tzset`, on
-    Windows, :class:`dateutil.tz.tzlocal` instances will always reflect the
+    Windows, :class:`dateutil2.tz.tzlocal` instances will always reflect the
     time zone settings *at the time that the process was started*, meaning
     changes to the machine's time zone settings during the run of a program
-    on Windows will **not** be reflected by :class:`dateutil.tz.tzlocal`.
+    on Windows will **not** be reflected by :class:`dateutil2.tz.tzlocal`.
     Because ``tzwinlocal`` reads the registry directly, it is unaffected by
     this issue.
     """

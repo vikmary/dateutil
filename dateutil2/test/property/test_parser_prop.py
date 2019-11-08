@@ -3,7 +3,7 @@ from hypothesis import given
 
 import pytest
 
-from dateutil.parser import parserinfo
+from dateutil2.parser import parserinfo
 
 
 @pytest.mark.parserinfo

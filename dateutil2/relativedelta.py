@@ -89,7 +89,7 @@ class relativedelta(object):
     For example
 
     >>> from datetime import datetime
-    >>> from dateutil.relativedelta import relativedelta, MO
+    >>> from dateutil2.relativedelta import relativedelta, MO
     >>> dt = datetime(2018, 4, 9, 13, 37, 0)
     >>> delta = relativedelta(hours=25, day=1, weekday=MO(1))
     >>> dt + delta
@@ -288,7 +288,7 @@ class relativedelta(object):
         relativedelta(days=+1, hours=+14)
 
         :return:
-            Returns a :class:`dateutil.relativedelta.relativedelta` object.
+            Returns a :class:`dateutil2.relativedelta.relativedelta` object.
         """
         # Cascade remainders down (rounding each to roughly nearest microsecond)
         days = int(self.days)

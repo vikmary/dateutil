@@ -9,7 +9,7 @@ ISO-8601 specification.
 """
 from datetime import datetime, timedelta, time, date
 import calendar
-from dateutil import tz
+from dateutil2 import tz
 
 from functools import wraps
 
@@ -107,10 +107,10 @@ class isoparser(object):
         - `±HHMM`
         - `±HH`
 
-        Offsets will be represented as :class:`dateutil.tz.tzoffset` objects,
+        Offsets will be represented as :class:`dateutil2.tz.tzoffset` objects,
         with the exception of UTC, which will be represented as
-        :class:`dateutil.tz.tzutc`. Time zone offsets equivalent to UTC (such
-        as `+00:00`) will also be represented as :class:`dateutil.tz.tzutc`.
+        :class:`dateutil2.tz.tzutc`. Time zone offsets equivalent to UTC (such
+        as `+00:00`) will also be represented as :class:`dateutil2.tz.tzutc`.
 
         :param dt_str:
             A string or stream containing only an ISO-8601 datetime string
@@ -189,11 +189,11 @@ class isoparser(object):
             A string representing an ISO time zone offset
 
         :param zero_as_utc:
-            Whether to return :class:`dateutil.tz.tzutc` for zero-offset zones
+            Whether to return :class:`dateutil2.tz.tzutc` for zero-offset zones
 
         :return:
-            Returns :class:`dateutil.tz.tzoffset` for offsets and
-            :class:`dateutil.tz.tzutc` for ``Z`` and (if ``zero_as_utc`` is
+            Returns :class:`dateutil2.tz.tzoffset` for offsets and
+            :class:`dateutil2.tz.tzutc` for ``Z`` and (if ``zero_as_utc`` is
             specified) offsets equivalent to UTC.
         """
         return self._parse_tzstr(tzstr, zero_as_utc=zero_as_utc)
