@@ -31,6 +31,7 @@ Additional resources about date/time string formats can be found below:
 from __future__ import unicode_literals
 
 import datetime
+import sys
 import re
 import string
 import time
@@ -559,14 +560,21 @@ class _ymd(list):
                     # 99-01-01
                     if self[1] <= 12:
                         year, month, day = self
+                        d_format = 'YYMMDD'
                     else:
                         year, day, month = self
+                        d_format = 'YYDDMM'
                 elif self[0] > 12 or (dayfirst and self[1] <= 12):
                     # 13-01-01
                     day, month, year = self
+                    d_format = 'DDMMYY'
                 else:
                     # 01-13-01
                     month, day, year = self
+                    d_format = 'MMDDYY'
+                if year <= 31:
+                    sys.stderr.write(f'WARNING: interpreting arbitraty date'
+                                     f' as {d_format}.\n')
 
         return year, month, day
 
