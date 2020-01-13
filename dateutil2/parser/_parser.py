@@ -444,12 +444,15 @@ class _ymd(list):
                 raise ValueError(label)
             label = 'Y'
 
-        super(self.__class__, self).append(int(val))
+        super(_ymd, self).append(int(val))
 
         if label == 'M':
-            if self.has_month:
-                raise ValueError('Month is already set')
-            self.mstridx = len(self) - 1
+            if not self.has_month:
+                self.mstridx = len(self) - 1
+            # elif int(val) == self[self.mstridx]:
+            #     self.mstridx = len(self) - 1
+            else:
+                raise ValueError('Month is already set to different value')
         elif label == 'D':
             if self.has_day:
                 raise ValueError('Day is already set')
@@ -753,10 +756,13 @@ class parser(object):
                 # Check month name
                 elif info.month(l[i]) is not None:
                     value = info.month(l[i])
-                    ymd.append(value, 'M')
+                    if not ymd.has_month or (ymd[ymd.mstridx] != int(value)):
+                        # if month is not set or set to different value
+                        ymd.append(value, 'M')
 
                     if i + 1 < len_l:
-                        if l[i + 1] in ('-', '/'):
+                        print(f"l[i:i+5] = {l[i:i+5]}")
+                        if l[i + 1] in ('-', '/'):  # and info.month(l[i + 2]) is None:
                             # Jan-01[-99]
                             sep = l[i + 1]
                             ymd.append(l[i + 2])
@@ -782,6 +788,8 @@ class parser(object):
                                 pass
                                 # TODO: not hit in tests
                             i += 4
+                        else:
+                            print('in else clause')
 
                 # Check am/pm
                 elif info.ampm(l[i]) is not None:
@@ -866,8 +874,11 @@ class parser(object):
             res.month = month
             res.day = day
 
-        except (IndexError, ValueError):
+
+        except (IndexError, ValueError) as msg:
+            print(f"Exception raised: {msg} for res={repr(res)}")
             return None, None
+        print(f"res = {res}")
 
         if not info.validate(res):
             return None, None
