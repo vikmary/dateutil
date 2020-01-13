@@ -373,12 +373,12 @@ class parserinfo(object):
         assert year >= 0
 
         if year < 100 and not century_specified:
-            # assume current century to start
+            # assuming current century to start
             year += self._century
 
-            if year >= self._year + 50:  # if too far in future
+            if year >= self._year + 5:  # if too far in future
                 year -= 100
-            elif year < self._year - 50:  # if too far in past
+            elif year < self._year - 95:  # if too far in past
                 year += 100
 
         return year
@@ -447,12 +447,9 @@ class _ymd(list):
         super(_ymd, self).append(int(val))
 
         if label == 'M':
-            if not self.has_month:
-                self.mstridx = len(self) - 1
-            # elif int(val) == self[self.mstridx]:
-            #     self.mstridx = len(self) - 1
-            else:
+            if self.has_month:
                 raise ValueError('Month is already set to different value')
+            self.mstridx = len(self) - 1
         elif label == 'D':
             if self.has_day:
                 raise ValueError('Day is already set')
@@ -761,7 +758,6 @@ class parser(object):
                         ymd.append(value, 'M')
 
                     if i + 1 < len_l:
-                        print(f"l[i:i+5] = {l[i:i+5]}")
                         if l[i + 1] in ('-', '/'):  # and info.month(l[i + 2]) is None:
                             # Jan-01[-99]
                             sep = l[i + 1]
@@ -788,8 +784,6 @@ class parser(object):
                                 pass
                                 # TODO: not hit in tests
                             i += 4
-                        else:
-                            print('in else clause')
 
                 # Check am/pm
                 elif info.ampm(l[i]) is not None:
@@ -876,9 +870,7 @@ class parser(object):
 
 
         except (IndexError, ValueError) as msg:
-            print(f"Exception raised: {msg} for res={repr(res)}")
             return None, None
-        print(f"res = {res}")
 
         if not info.validate(res):
             return None, None
