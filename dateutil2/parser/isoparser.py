@@ -10,13 +10,14 @@ ISO-8601 specification.
 from datetime import datetime, timedelta, time, date
 import calendar
 from dateutil2 import tz
+from dateutil2.date import Date
 
 from functools import wraps
 
 import re
 import six
 
-__all__ = ["isoparse", "isoparser"]
+__all__ = ["isoparse", "isoparser", "parse_isodate"]
 
 
 def _takes_ascii(f):
@@ -146,7 +147,7 @@ class isoparser(object):
         return datetime(*components)
 
     @_takes_ascii
-    def parse_isodate(self, datestr):
+    def parse_isodate(self, datestr, fuzzy: bool = False):
         """
         Parse the date portion of an ISO string.
 
@@ -157,10 +158,10 @@ class isoparser(object):
             Returns a :class:`datetime.date` object
         """
         components, pos = self._parse_isodate(datestr)
-        if pos < len(datestr):
+        if not fuzzy and (pos < len(datestr)):
             raise ValueError('String contains unknown ISO ' +
                              'components: {}'.format(datestr))
-        return date(*components)
+        return Date(*components)
 
     @_takes_ascii
     def parse_isotime(self, timestr):
@@ -211,7 +212,7 @@ class isoparser(object):
 
     def _parse_isodate_common(self, dt_str):
         len_str = len(dt_str)
-        components = [1, 1, 1]
+        components = [0, 0, 0]
 
         if len_str < 4:
             raise ValueError('ISO string too short')
@@ -234,10 +235,7 @@ class isoparser(object):
         pos += 2
 
         if pos >= len_str:
-            if has_sep:
-                return components, pos
-            else:
-                raise ValueError('Invalid ISO format')
+            return components, pos
 
         if has_sep:
             if dt_str[pos:pos + 1] != self._DATE_SEP:
@@ -409,3 +407,4 @@ class isoparser(object):
 
 DEFAULT_ISOPARSER = isoparser()
 isoparse = DEFAULT_ISOPARSER.isoparse
+parse_isodate= DEFAULT_ISOPARSER.parse_isodate
