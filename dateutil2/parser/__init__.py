@@ -5,7 +5,7 @@ from ._parser import UnknownTimezoneWarning
 
 from ._parser import __doc__
 
-from .isoparser import isoparser, isoparse
+from .isoparser import isoparser, isoparse, parse_isodate
 
 __all__ = ['parse', 'parser', 'parserinfo',
            'isoparse', 'isoparser',

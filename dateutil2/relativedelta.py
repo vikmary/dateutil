@@ -8,7 +8,7 @@ from math import copysign
 from six import integer_types
 from warnings import warn
 
-from ._common import weekday
+from dateutil2._common import weekday
 
 MO, TU, WE, TH, FR, SA, SU = weekdays = tuple(weekday(x) for x in range(7))
 

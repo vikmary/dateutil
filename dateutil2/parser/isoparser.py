@@ -212,7 +212,7 @@ class isoparser(object):
 
     def _parse_isodate_common(self, dt_str):
         len_str = len(dt_str)
-        components = [0, 0, 0]
+        components = [None, None, None]
 
         if len_str < 4:
             raise ValueError('ISO string too short')
@@ -327,7 +327,7 @@ class isoparser(object):
 
     def _parse_isotime(self, timestr):
         len_str = len(timestr)
-        components = [0, 0, 0, 0, None]
+        components = [None, None, None, None, None]
         pos = 0
         comp = -1
 
