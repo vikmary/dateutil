@@ -47,8 +47,9 @@ from decimal import Decimal
 
 from warnings import warn
 
-from .. import relativedelta
-from .. import tz
+from dateutil2 import relativedelta
+from dateutil2 import tz
+from dateutil2.date import Date
 
 __all__ = ["parse", "parserinfo", "ParserError"]
 
@@ -647,10 +648,6 @@ class parser(object):
             your system.
         """
 
-        if default is None:
-            default = datetime.datetime.now().replace(hour=0, minute=0,
-                                                      second=0, microsecond=0)
-
         res, skipped_tokens = self._parse(timestr, **kwargs)
 
         if res is None:
@@ -662,6 +659,7 @@ class parser(object):
         try:
             ret = self._build_naive(res, default)
         except ValueError as e:
+            print(e)
             six.raise_from(ParserError(e.args[0] + ": %s", timestr), e)
 
         if not ignoretz:
@@ -675,7 +673,7 @@ class parser(object):
     class _result(_resultbase):
         __slots__ = ["year", "month", "day", "weekday",
                      "hour", "minute", "second", "microsecond",
-                     "tzname", "tzoffset", "ampm","any_unused_tokens"]
+                     "tzname", "tzoffset", "ampm", "any_unused_tokens"]
 
     def _parse(self, timestr, dayfirst=None, yearfirst=None, fuzzy=False,
                fuzzy_with_tokens=False):
@@ -1242,14 +1240,23 @@ class parser(object):
         if 'day' not in repl:
             # If the default day exceeds the last day of the month, fall back
             # to the end of the month.
-            cyear = default.year if res.year is None else res.year
-            cmonth = default.month if res.month is None else res.month
-            cday = default.day if res.day is None else res.day
+            
+            if default is not None:
+                cyear = default.year if res.year is None else res.year
+                cmonth = default.month if res.month is None else res.month
+                cday = default.day if res.day is None else res.day
+            else:
+                cyear = 1 if res.year is None else res.year
+                cmonth = 1 if res.month is None else res.month
+                cday = 1 if res.day is None else res.day
 
             if cday > monthrange(cyear, cmonth)[1]:
                 repl['day'] = monthrange(cyear, cmonth)[1]
 
-        naive = default.replace(**repl)
+        if default is not None:
+            naive = default.replace(**repl)
+        else:
+            naive = Date(repl.get('year'), repl.get('month'), repl.get('day'))
 
         if res.weekday is not None and not res.day:
             naive = naive + relativedelta.relativedelta(weekday=res.weekday)

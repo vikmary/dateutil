@@ -4,11 +4,13 @@
 from collections import namedtuple
 import datetime
 
+import dateutil2.relativedelta as relativedelta
+
 
 class Date(namedtuple('Date', ['year', 'month', 'day'])):
     """
       Class for representing a date with day/month/year.
-      Values of day/month/year can equal zero, that means, that
+      Values of day/month/year can equal None, that means, that
       the field is undefined.
     """
     __slots__ = ()
@@ -21,6 +23,25 @@ class Date(namedtuple('Date', ['year', 'month', 'day'])):
         except ValueError as msg:
             raise ValueError(msg)
         return tuple.__new__(_cls, (year, month, day))
+
+    def __add__(self, other: relativedelta.relativedelta) -> namedtuple:
+        if isinstance(other, (relativedelta.relativedelta, namedtuple)):
+            res = other + relativedelta.relativedelta(years=self.year or 0,
+                                                      months=self.month or 0,
+                                                      days=self.day or 0)
+            res_norm = res.normalized()
+            return tuple.__new__(type(self), (res_norm.years or None,
+                                              res_norm.months or None,
+                                              res_norm.days or None))
+        else:
+            raise ValueError(f'add operation not supported for the type'
+                             f'{type(other)}.')
+
+    def replace(self, **kwargs):
+        """
+          Return a new instance of Date with new year/month/day.
+        """
+        return self._replace(**kwargs)
 
     @classmethod
     def from_date(cls, date: datetime.date) -> namedtuple:
