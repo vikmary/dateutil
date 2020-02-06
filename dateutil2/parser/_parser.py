@@ -178,7 +178,7 @@ class _timelex(object):
                     self.charstack.append(nextchar)
                     break  # emit token
 
-        if (state in ('a.', '0.') and (seenletters or token.count('.') > 1 or
+        if (state in ('a.', '0.') and (seenletters or token.count('.') > 0 or  # 1 or
                                        token[-1] in '.,')):
             l = self._split_decimal.split(token)
             token = l[0]
