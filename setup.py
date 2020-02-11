@@ -51,7 +51,7 @@ setup(
           'write_to': 'dateutil2/_version.py',
       },
       ## Needed since doctest not supported by PyPA.
-      long_description = README,
+      long_description=README,
       cmdclass={
           "test": Unsupported
       }
