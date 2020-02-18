@@ -158,7 +158,9 @@ class isoparser(object):
             Returns a :class:`datetime.date` object
         """
         components, pos = self._parse_isodate(datestr)
-        if not fuzzy and (pos < len(datestr)):
+
+        if (not fuzzy or not any(c.isdigit() for c in datestr[pos+1:].decode())) \
+                and (pos < len(datestr)):
             raise ValueError('String contains unknown ISO ' +
                              'components: {}'.format(datestr))
         return Date(*components)
@@ -208,6 +210,7 @@ class isoparser(object):
         try:
             return self._parse_isodate_common(dt_str)
         except ValueError:
+            print('found error, parsing uncommonly')
             return self._parse_isodate_uncommon(dt_str)
 
     def _parse_isodate_common(self, dt_str):
@@ -235,7 +238,10 @@ class isoparser(object):
         pos += 2
 
         if pos >= len_str:
-            return components, pos
+            if has_sep:
+                return components, pos
+            else:
+                raise ValueError('Invalid ISO format')
 
         if has_sep:
             if dt_str[pos:pos + 1] != self._DATE_SEP:
