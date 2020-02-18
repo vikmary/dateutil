@@ -202,7 +202,7 @@ class isoparser(object):
         return self._parse_tzstr(tzstr, zero_as_utc=zero_as_utc)
 
     # Constants
-    _DATE_SEP = b'-'
+    _DATE_SEPS = b'- '
     _TIME_SEP = b':'
     _FRACTION_REGEX = re.compile(b'[\\.,]([0-9]+)')
 
@@ -210,7 +210,6 @@ class isoparser(object):
         try:
             return self._parse_isodate_common(dt_str)
         except ValueError:
-            print('found error, parsing uncommonly')
             return self._parse_isodate_uncommon(dt_str)
 
     def _parse_isodate_common(self, dt_str):
@@ -226,7 +225,7 @@ class isoparser(object):
         if pos >= len_str:
             return components, pos
 
-        has_sep = dt_str[pos:pos + 1] == self._DATE_SEP
+        has_sep = dt_str[pos:pos + 1] in self._DATE_SEPS
         if has_sep:
             pos += 1
 
@@ -244,7 +243,7 @@ class isoparser(object):
                 raise ValueError('Invalid ISO format')
 
         if has_sep:
-            if dt_str[pos:pos + 1] != self._DATE_SEP:
+            if dt_str[pos:pos + 1] not in  self._DATE_SEPS:
                 raise ValueError('Invalid separator in ISO string')
             pos += 1
 
@@ -261,7 +260,7 @@ class isoparser(object):
         # All ISO formats start with the year
         year = int(dt_str[0:4])
 
-        has_sep = dt_str[4:5] == self._DATE_SEP
+        has_sep = dt_str[4:5] in self._DATE_SEPS
 
         pos = 4 + has_sep       # Skip '-' if it's there
         if dt_str[pos:pos + 1] == b'W':
@@ -272,7 +271,7 @@ class isoparser(object):
 
             dayno = 1
             if len(dt_str) > pos:
-                if (dt_str[pos:pos + 1] == self._DATE_SEP) != has_sep:
+                if (dt_str[pos:pos + 1] in self._DATE_SEPS) != has_sep:
                     raise ValueError('Inconsistent use of dash separator')
 
                 pos += has_sep
