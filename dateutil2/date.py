@@ -48,8 +48,8 @@ class Date(namedtuple('Date', ['year', 'month', 'day'])):
         """
           Return a new Date object with the same year/month/day.
         """
-        return cls.__new__(date.year, date.month, date.day)
-        
+        return cls.__new__(cls, year=date.year, month=date.month, day=date.day)
+
     def to_date(self) -> datetime.date:
         """
           Return a new datetime.date with the same year/month/day.
