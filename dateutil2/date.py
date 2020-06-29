@@ -1,31 +1,42 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from collections import namedtuple
+from typing import Optional
+from dataclasses import dataclass
 import datetime
 
 import dateutil2.relativedelta as relativedelta
 
 
-class Date(namedtuple('Date', ['year', 'month', 'day'])):
+@dataclass
+class Date:
     """
       Class for representing a date with day/month/year.
       Values of day/month/year can equal None, that means, that
       the field is undefined.
     """
-    __slots__ = ()
+    year: Optional[int]
+    month: Optional[int]
+    day: Optional[int]
 
-    def __new__(_cls, year, month, day):
-        'Create new instance of Date(year, month, day)'
+    def __init__(self,
+                 year: Optional[int] = None,
+                 month: Optional[int] = None,
+                 day: Optional[int] = None) -> None:
+        """
+        Create new instance of Date(year, month, day)
+        """
         try:
             # Checking that year/month/day is in valid ranges
             datetime.date(year or 1, month or 1, day or 1)
         except ValueError as msg:
             raise ValueError(msg)
-        return tuple.__new__(_cls, (year, month, day))
+        self.year = year
+        self.month = month
+        self.day = day
 
-    def __add__(self, other: relativedelta.relativedelta) -> namedtuple:
-        if isinstance(other, (relativedelta.relativedelta, namedtuple)):
+    def __add__(self, other: relativedelta.relativedelta) -> object:
+        if isinstance(other, (relativedelta.relativedelta, Date)):
             res = other + relativedelta.relativedelta(years=self.year or 0,
                                                       months=self.month or 0,
                                                       days=self.day or 0)
@@ -37,14 +48,19 @@ class Date(namedtuple('Date', ['year', 'month', 'day'])):
             raise ValueError(f'add operation not supported for the type'
                              f'{type(other)}.')
 
-    def replace(self, **kwargs):
-        """
-          Return a new instance of Date with new year/month/day.
-        """
-        return self._replace(**kwargs)
+    @classmethod
+    def from_json(cls, s: str) -> object:
+        values = []
+        for f in s[5: -1].split(','):
+            value = f.split('=')[-1]
+            if value.strip() == 'None':
+                values.append(None)
+            else:
+                values.append(int(value))
+        return cls(*values)
 
     @classmethod
-    def from_date(cls, date: datetime.date) -> namedtuple:
+    def from_date(cls, date: datetime.date) -> object:
         """
           Return a new Date object with the same year/month/day.
         """
