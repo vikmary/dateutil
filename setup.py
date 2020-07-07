@@ -19,6 +19,15 @@ if LooseVersion(setuptools.__version__) <= LooseVersion("24.3"):
     warnings.warn("python_requires requires setuptools version > 24.3",
                   UserWarning)
 
+INSTALL_REQUIRES = []
+EXTRAS_REQUIRE = {}
+
+if LooseVersion(setuptools.__version__) <= LooseVersion("18.0"):
+    if sys.version_info[0:2] < (3, 7):
+        INSTALL_REQUIRES.append("dataclasses")
+else:
+    EXTRAS_REQUIRE[":python_version<'3.7'"] = ["dataclasses"]
+
 
 class Unsupported(TestCommand):
     def run(self):
@@ -52,6 +61,8 @@ setup(
       },
       # Needed since doctest not supported by PyPA.
       long_description=README,
+      install_requires=INSTALL_REQUIRES,
+      extras_require=EXTRAS_REQUIRE,
       cmdclass={
           "test": Unsupported
       }
