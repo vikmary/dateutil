@@ -3,7 +3,7 @@ from os.path import isfile
 import os
 
 import setuptools
-from setuptools import setup, find_packages
+from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
 from distutils.version import LooseVersion
@@ -50,7 +50,7 @@ setup(
       use_scm_version={
           'write_to': 'dateutil2/_version.py',
       },
-      ## Needed since doctest not supported by PyPA.
+      # Needed since doctest not supported by PyPA.
       long_description=README,
       cmdclass={
           "test": Unsupported
